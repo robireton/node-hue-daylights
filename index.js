@@ -18,6 +18,14 @@ nconf.argv({
     describe: "observer longitude in decimal degrees; positive is east, negative is west",
     default: -84.5
   },
+  "h": {
+    alias: "host",
+    describe: "address of the Hue bridge"
+  },
+  "u": {
+    alias: "user",
+    describe: "authorized username for interacting with the Hue bridge"
+  },
   "e": {
     alias: "east",
     describe: "ID of the East light",
@@ -32,14 +40,6 @@ nconf.argv({
     alias: "west",
     describe: "ID of the West light",
     default: 3
-  },
-  "h": {
-    alias: "host",
-    describe: "address of the Hue bridge"
-  },
-  "u": {
-    alias: "username",
-    describe: "authorized username for interacting with the Hue bridge"
   }
 }).file({ "file": process.env.HOME + '/.config/node-hue-daylights-config.json' });
 
@@ -55,9 +55,9 @@ var max_elevation = Math.min(90 + 23.44 - Math.abs(coordinates.latitude), 90);
 var total_brightness = (1 + Math.cos(Math.min(0, Math.max(-Math.PI, Math.PI * (sun.elevation-twilight) / (max_elevation-twilight) - Math.PI))))/2;
 console.log(total_brightness);
 
-var east  = Math.min(255, Math.max(1, Math.ceil(300*total_brightness*((Math.cos(interopolate(sun.azimuth, -30, 210, -Math.PI, Math.PI)) + 1) / 2))));
-var south = Math.min(255, Math.max(1, Math.ceil(300*total_brightness*((Math.cos(interopolate(sun.azimuth,  60, 300, -Math.PI, Math.PI)) + 1) / 2))));
-var west  = Math.min(255, Math.max(1, Math.ceil(300*total_brightness*((Math.cos(interopolate(sun.azimuth, 150, 390, -Math.PI, Math.PI)) + 1) / 2))));
+var east  = Math.min(255, Math.max(1, Math.ceil(360*total_brightness*((Math.cos(interopolate(sun.azimuth, -60, 240, -Math.PI, Math.PI)) + 1) / 2))));
+var south = Math.min(255, Math.max(1, Math.ceil(360*total_brightness*((Math.cos(interopolate(sun.azimuth,  30, 330, -Math.PI, Math.PI)) + 1) / 2))));
+var west  = Math.min(255, Math.max(1, Math.ceil(360*total_brightness*((Math.cos(interopolate(sun.azimuth, 120, 410, -Math.PI, Math.PI)) + 1) / 2))));
 console.log('east: %d; south: %d, west: %d', east, south, west);
 
 var color = Math.round(interopolate(sun.elevation, 0, Math.max(0, Math.min(90 - 23.44/2 - Math.abs(coordinates.latitude), 90)), 500, 153));

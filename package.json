@@ -1,6 +1,6 @@
 {
   "name": "node-hue-daylights",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "simulate the progression of daylight with three Hue lights",
   "main": "index.js",
   "scripts": {
